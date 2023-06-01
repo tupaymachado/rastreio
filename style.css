@@ -24,3 +24,14 @@ body {
     align-items: center;
     text-align: center;
 }
+
+.loginForm {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginForm > * {
+    margin: 5px;
+}
