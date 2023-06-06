@@ -49,7 +49,7 @@ function login() {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             window.user = userCredential.user.uid;
-            window.location.href = "status.html";
+            window.location.href = "main.html";
         })
         .catch((error) => {
             console.log(error.code);
