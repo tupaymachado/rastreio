@@ -48,7 +48,8 @@ function login() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            window.user = userCredential.user.uid;
+            const uid = userCredential.user.uid;
+            localStorage.setItem('uid', uid);
             window.location.href = "main.html";
         })
         .catch((error) => {

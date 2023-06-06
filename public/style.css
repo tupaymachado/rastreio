@@ -32,6 +32,47 @@ body {
     justify-content: center;
 }
 
-.loginForm > * {
+.loginForm>* {
     margin: 5px;
+}
+
+table {
+    margin: auto;
+    width: 90%;
+    border-collapse: collapse;
+    background-color: white;
+    text-align: center;
+    color: black;
+    border-bottom: 1px solid black;
+    font-size: 12px;
+}
+
+th,
+td {
+    padding: 8px;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+#malote,
+#origem-header,
+#responsavel,
+#data-envio,
+#destino-header,
+#transportador,
+#recebimento,
+#responsavel-cd,
+#envio,
+#responsavel-cd2,
+#transportador2,
+#recebimento2,
+#responsavel2 {
+    font-weight: bold;
+    text-align: center;
 }
