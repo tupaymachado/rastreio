@@ -39,6 +39,7 @@ function validateEmail(email) {
 function validatePassword(password) {
     return !!password;
 }
+
 //create a login function with firebase auth that redirects user to status.html if login is successful
 function login() {
     const email = emailInput.value;
