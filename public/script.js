@@ -12,6 +12,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const database = getDatabase(app);
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
@@ -40,15 +41,14 @@ function validatePassword(password) {
     return !!password;
 }
 
-const uid = user.uid;
-
 //create a login function with firebase auth that redirects user to status.html if login is successful
 function login() {
     const email = emailInput.value;
     const password = passwordInput.value;
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
-        .then(response => {
+        .then((userCredential) => {
+            window.user = userCredential.user.uid;
             window.location.href = "status.html";
         })
         .catch((error) => {
@@ -59,9 +59,8 @@ function login() {
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        const uid = user.uid;
-        console.log("UID do usuário:", uid);
+        console.log("UID do usuário logado:", user.uid);
     } else {
-        console.log("Nenhum usuário autenticado");
+        console.log("Nenhum usuário logado");
     }
 });
