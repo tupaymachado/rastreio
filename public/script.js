@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { getDatabase, ref } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -65,3 +65,5 @@ onAuthStateChanged(auth, (user) => {
         console.log("Nenhum usuário logado");
     }
 });
+
+// function loadShowroomData() {

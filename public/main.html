@@ -14,95 +14,78 @@
         <div class="logo">
             <img src="img/logo.png" alt="Logo Rastreio">
             <span>Rastreio de Malotes - Status</span> &nbsp;&nbsp;
-            <span id="user">/ Bem-Vindo, Tupay Machado</span>
+            <span id="user-logo">/ Bem-Vindo, Tupay Machado</span>
         </div>
     </div>
 
     <div class="status"> <!-- vai mostrar os últmos 5 malotes recebidos -->
-        <div class="container-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th id="status-hd">Status</th>
-                        <th id="origem-hd">Origem</th>
-                        <th id="cd-hd">CD</th>
-                        <th id="destino-hd">Destino</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="status-cell1"></td>
-                        <td>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th id="malote">Malote</th>
-                                        <th id="origem-header">Origem</th>
-                                        <th id="responsavel">Responsável</th>
-                                        <th id="data-envio">Envio</th>
-                                        <th id="destino-header">Destino</th>
-                                        <th id="transportador">Transportador</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                    </tr>
-                                    <!-- Adicione mais linhas conforme necessário -->
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th id="recebimento">Recebimento</th>
-                                        <th id="responsavel-cd">Responsável</th>
-                                        <th id="envio">Envio</th>
-                                        <th id="responsavel-cd2">Responsável</th>
-                                        <th id="transportador2">Transportador</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                    </tr>
-                                    <!-- Adicione mais linhas conforme necessário -->
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th id="recebimento2">Recebimento</th>
-                                        <th id="responsavel2">Responsável</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>...</td>
-                                        <td>...</td>
-                                    </tr>
-                                    <!-- Adicione mais linhas conforme necessário -->
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <!-- Adicione mais linhas conforme necessário -->
-                </tbody>
-            </table>
-        </div>
+        <table class="container-table">
+            <thead>
+                <tr>
+                    <th id="origem-hd">Origem</th>
+                    <th id="cd-hd">CD</th>
+                    <th>Recebido?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table id="tabela-origem">
+                            <thead>
+                                <tr>
+                                    <th id="malote">Malote</th>
+                                    <th id="origem-header">Origem</th>
+                                    <th id="responsavel">Responsável</th>
+                                    <th id="data-envio">Envio</th>
+                                    <th id="destino-header">Destino</th>
+                                    <th id="transportador">Transportador</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                </tr>
+                                <!-- Adicione mais linhas conforme necessário -->
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <table id="tabela-cd">
+                            <thead>
+                                <tr>
+                                    <th id="recebimento">Recebimento</th>
+                                    <th id="responsavel-cd">Responsável</th>
+                                    <th id="envio">Envio</th>
+                                    <th id="responsavel-cd2">Responsável</th>
+                                    <th id="transportador2">Transportador</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                </tr>
+                                <!-- Adicione mais linhas conforme necessário -->
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="recebido" name="recebido" value="ok">
+                    </td>
+                </tr>
+                <!-- Adicione mais linhas conforme necessário -->
+            </tbody>
+        </table>
     </div>
 
     <script src="script.js" type="module"></script>
+    <script src="main.js" type="module"></script>
 </body>
