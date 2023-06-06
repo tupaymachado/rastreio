@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCCVI3ns8bDvMKgHX_H5u6y4TeF7uf4K84",
@@ -40,6 +40,8 @@ function validatePassword(password) {
     return !!password;
 }
 
+const uid = user.uid;
+
 //create a login function with firebase auth that redirects user to status.html if login is successful
 function login() {
     const email = emailInput.value;
@@ -50,6 +52,16 @@ function login() {
             window.location.href = "status.html";
         })
         .catch((error) => {
+            console.log(error.code);
             alert("Erro ao realizar login");
         });
 }
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const uid = user.uid;
+        console.log("UID do usuário:", uid);
+    } else {
+        console.log("Nenhum usuário autenticado");
+    }
+});
