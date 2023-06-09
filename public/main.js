@@ -38,7 +38,9 @@ function loadUser() {
             const data = snapshot.val();
             window.user = data;
             resolve(data);
-            console.log(user);
+            const nome = document.getElementById('user-logo');
+            nome.innerHTML = `/ Bem-vindo, ${user}`;
+            loadStatus();
         }, (error) => {
             reject(error);
         });
@@ -47,3 +49,43 @@ function loadUser() {
 };
 loadUser()
 
+function loadStatus() {
+    console.log('loadStatus')
+    const tabelaOrigem = document.getElementById("tabela-origem").getElementsByTagName("tbody")[0];
+    const tabelaCD = document.getElementById("tabela-cd").getElementsByTagName("tbody")[0];
+    const tabelaRecebido = document.getElementById("tabela-recebido").getElementsByTagName("tbody")[0];
+    for (let i = 0; i < window.envios.length; i++) {
+        if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase()) {
+            const novaLinhaOrigem = document.createElement("tr");
+            novaLinhaOrigem.innerHTML = `
+                <td>${window.envios[i].origem['Codigo do Malote']}</td>
+                <td>${window.envios[i].origem['Origem']}</td>
+                <td>${window.envios[i].origem['Responsavel']}</td>
+                <td>${window.envios[i].origem['Saida']}</td>
+                <td>${window.envios[i].origem['Destino']}</td>
+                <td>${window.envios[i].origem['Transportador']}</td>
+            `;
+            tabelaOrigem.appendChild(novaLinhaOrigem); //adiciona a linha na tabela de origem
+            const novaLinhaCD = document.createElement("tr");
+            novaLinhaCD.innerHTML = `
+                <td>${window.envios[i].cd['Chegada']}</td>
+                <td>${window.envios[i].cd['Responsavel pelo recebimento']}</td>
+                <td>${window.envios[i].cd['Saida']}</td>
+                <td>${window.envios[i].cd['Responsavel pela saida']}</td>
+                <td>${window.envios[i].cd['Transportador']}</td>
+            `;
+            tabelaCD.appendChild(novaLinhaCD);
+            const novaLinhaRecebido = document.createElement("tr");
+            if (!window.envios[i].destino['Chegada'] && !window.envios[i].cd['Responsavel pela saida']) {
+                novaLinhaRecebido.innerHTML = `<td>Em trânsito</td>`;
+                tabelaRecebido.appendChild(novaLinhaRecebido);
+            } else if (!window.envios[i].destino['Chegada']) {
+                novaLinhaRecebido.innerHTML = `<td><input type='checkbox'>Recebido?</input></td>`; //inserir função que muda o status para recebido
+                tabelaRecebido.appendChild(novaLinhaRecebido);
+            } else {
+                novaLinhaRecebido.innerHTML = `<td>Recebido</td>`;
+                tabelaRecebido.appendChild(novaLinhaRecebido);
+            }
+        }
+    }
+}
