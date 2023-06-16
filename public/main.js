@@ -15,10 +15,10 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const uid = localStorage.getItem('uid');
 
-document.getElementById('enviosQt').addEventListener('change', function() {
+document.getElementById('enviosQt').addEventListener('change', function () {
     const quantidade = parseInt(this.value);
     loadStatus(quantidade);
-  });
+});
 
 function loadEnvios() {
     return new Promise((resolve, reject) => {
@@ -63,39 +63,43 @@ function loadStatus() {
     tabelaOrigem.innerHTML = '';
     tabelaRecebido.innerHTML = '';
     const enviosQt = document.getElementById("enviosQt").value;
-    for (let i = window.envios.length - enviosQt; i < window.envios.length; i++) {
+    const enviosMain = [];
+    for (let i = 0; i < window.envios.length; i++) {
         if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase()) { //jogar os envios selecionados para um outro array e fazer ele aparecer dali
-            console.log(i)
-            const novaLinhaOrigem = document.createElement("tr");
-            novaLinhaOrigem.innerHTML = `
-                <td>${window.envios[i].origem['Codigo do Malote']}</td>
-                <td>${window.envios[i].origem['Origem']}</td>
-                <td>${window.envios[i].origem['Responsavel']}</td>
-                <td>${window.envios[i].origem['Saida']}</td>
-                <td>${window.envios[i].origem['Destino']}</td>
-                <td>${window.envios[i].origem['Transportador']}</td>
+            enviosMain.push(window.envios[i])
+        }
+    }   
+    for (let j = 0; j < enviosMain.length; j++) {
+        console.log(enviosMain[j])
+        const novaLinhaOrigem = document.createElement("tr");
+        novaLinhaOrigem.innerHTML = `
+                <td>${enviosMain[j].origem['Codigo do Malote']}</td>
+                <td>${enviosMain[j].origem['Origem']}</td>
+                <td>${enviosMain[j].origem['Responsavel']}</td>
+                <td>${enviosMain[j].origem['Saida']}</td>
+                <td>${enviosMain[j].origem['Destino']}</td>
+                <td>${enviosMain[j].origem['Transportador']}</td>
             `;
-            tabelaOrigem.appendChild(novaLinhaOrigem); //adiciona a linha na tabela de origem
-            const novaLinhaCD = document.createElement("tr");
-            novaLinhaCD.innerHTML = `
-                <td>${window.envios[i].cd['Chegada']}</td>
-                <td>${window.envios[i].cd['Responsavel pelo recebimento']}</td>
-                <td>${window.envios[i].cd['Saida']}</td>
-                <td>${window.envios[i].cd['Responsavel pela saida']}</td>
-                <td>${window.envios[i].cd['Transportador']}</td>
+        tabelaOrigem.appendChild(novaLinhaOrigem); //adiciona a linha na tabela de origem
+        const novaLinhaCD = document.createElement("tr");
+        novaLinhaCD.innerHTML = `
+                <td>${enviosMain[j].cd['Chegada']}</td>
+                <td>${enviosMain[j].cd['Responsavel pelo recebimento']}</td>
+                <td>${enviosMain[j].cd['Saida']}</td>
+                <td>${enviosMain[j].cd['Responsavel pela saida']}</td>
+                <td>${enviosMain[j].cd['Transportador']}</td>
             `;
-            tabelaCD.appendChild(novaLinhaCD);
-            const novaLinhaRecebido = document.createElement("tr");
-            if (!window.envios[i].destino['Chegada'] && !window.envios[i].cd['Responsavel pela saida']) {
-                novaLinhaRecebido.innerHTML = `<td>Em trânsito</td>`;
-                tabelaRecebido.appendChild(novaLinhaRecebido);
-            } else if (!window.envios[i].destino['Chegada']) {
-                novaLinhaRecebido.innerHTML = `<td><input type='checkbox'>Recebido?</input></td>`; //inserir função que muda o status para recebido
-                tabelaRecebido.appendChild(novaLinhaRecebido);
-            } else {
-                novaLinhaRecebido.innerHTML = `<td>Recebido</td>`;
-                tabelaRecebido.appendChild(novaLinhaRecebido);
-            }
+        tabelaCD.appendChild(novaLinhaCD);
+        const novaLinhaRecebido = document.createElement("tr");
+        if (!enviosMain[j].destino['Chegada'] && !enviosMain[j].cd['Responsavel pela saida']) {
+            novaLinhaRecebido.innerHTML = `<td>Em trânsito</td>`;
+            tabelaRecebido.appendChild(novaLinhaRecebido);
+        } else if (!enviosMain[j].destino['Chegada']) {
+            novaLinhaRecebido.innerHTML = `<td><input type='checkbox'>Recebido?</input></td>`; //inserir função que muda o status para recebido
+            tabelaRecebido.appendChild(novaLinhaRecebido);
+        } else {
+            novaLinhaRecebido.innerHTML = `<td>Recebido</td>`;
+            tabelaRecebido.appendChild(novaLinhaRecebido);
         }
     }
 }
