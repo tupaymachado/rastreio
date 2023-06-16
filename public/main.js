@@ -15,6 +15,11 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const uid = localStorage.getItem('uid');
 
+document.getElementById('enviosQt').addEventListener('change', function() {
+    const quantidade = parseInt(this.value);
+    loadStatus(quantidade);
+  });
+
 function loadEnvios() {
     return new Promise((resolve, reject) => {
         const enviosRef = ref(database, "envios");
@@ -54,8 +59,13 @@ function loadStatus() {
     const tabelaOrigem = document.getElementById("tabela-origem").getElementsByTagName("tbody")[0];
     const tabelaCD = document.getElementById("tabela-cd").getElementsByTagName("tbody")[0];
     const tabelaRecebido = document.getElementById("tabela-recebido").getElementsByTagName("tbody")[0];
-    for (let i = 0; i < window.envios.length; i++) {
-        if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase()) {
+    tabelaCD.innerHTML = '';
+    tabelaOrigem.innerHTML = '';
+    tabelaRecebido.innerHTML = '';
+    const enviosQt = document.getElementById("enviosQt").value;
+    for (let i = window.envios.length - enviosQt; i < window.envios.length; i++) {
+        if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase()) { //jogar os envios selecionados para um outro array e fazer ele aparecer dali
+            console.log(i)
             const novaLinhaOrigem = document.createElement("tr");
             novaLinhaOrigem.innerHTML = `
                 <td>${window.envios[i].origem['Codigo do Malote']}</td>

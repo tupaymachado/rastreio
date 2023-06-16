@@ -13,12 +13,22 @@
     <div class="container">
         <div class="logo">
             <img src="img/logo.png" alt="Logo Rastreio">
-            <span>Rastreio de Malotes - Status</span> &nbsp;&nbsp;
-            <span id="user-logo">/ Bem-Vindo, Tupay Machado</span>
+            <span>Rastreio de Malotes - Status</span>
+            <span id="user-logo">Bem-Vindo, Tupay Machado</span>
         </div>
     </div>
 
     <div class="status"> <!-- vai mostrar os últmos 5 malotes recebidos -->
+        <div id=options-container>
+            <label for="enviosQt">Defina quantos envios quer visualizar, a começar pelo último:</label>
+            <select id="enviosQt" name="enviosQt">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="all">Todos</option>
+            </select>
+        </div>
         <table class="container-table">
             <thead>
                 <tr>
