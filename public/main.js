@@ -19,7 +19,7 @@ document.getElementById('statusQt').addEventListener('change', function () {
     loadStatus();
 });
 
-function loadEnvios() {
+function loadEnviosDB() {
     return new Promise((resolve, reject) => {
         const enviosRef = ref(database, "envios");
 
@@ -32,7 +32,7 @@ function loadEnvios() {
         });
     });
 };
-loadEnvios()
+loadEnviosDB()
 
 function loadUser() {
     return new Promise((resolve, reject) => {
@@ -50,33 +50,60 @@ function loadUser() {
     }
     )
 };
-loadUser()
-
-function loadEnvios() {
-
-    const tabelaEnvios = document.getElementById("envios-table-body");
-    tabelaEnvios.innerHTML = '';
-}
+loadUser();
 
 function loadStatus() {
     const tabelaStatus = document.getElementById("status-table-body");
     tabelaStatus.innerHTML = '';
-    const enviosMain = [];
+    const statusMain = [];
+    console.log(window.envios);
     for (let i = 0; i < window.envios.length; i++) {
         if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase()) { //jogar os envios selecionados para um outro array e fazer ele aparecer dali
-            enviosMain.push(window.envios[i])
+            statusMain.push(window.envios[i])
         }
     }
-    const statusQt = (document.getElementById("statusQt").value > enviosMain.length) ? enviosMain.length : document.getElementById("statusQt").value;
-    for (let j = enviosMain.length - statusQt; j < enviosMain.length; j++) {
+    const statusQt = (document.getElementById("statusQt").value > statusMain.length) ? statusMain.length : document.getElementById("statusQt").value;
+    for (let j = statusMain.length - statusQt; j < statusMain.length; j++) {
         let envioStatus = '';
-        if (!enviosMain[j].destino['Chegada'] && !enviosMain[j].cd['Responsavel pela saida']) {
+        if (!statusMain[j].destino['Chegada'] && !statusMain[j].cd['Responsavel pela saida']) {
             envioStatus = `<td>Em trânsito</td>`;
-        } else if (!enviosMain[j].destino['Chegada']) {
+        } else if (!statusMain[j].destino['Chegada']) {
             envioStatus = `<td><input type='checkbox'>Recebido?</input></td>`; //inserir função que muda o status para recebido
         } else {
             envioStatus = `<td>Recebido</td>`;
         }
+        const novaLinha = document.createElement("tr");
+        novaLinha.innerHTML = `
+                <td>${statusMain[j].origem['Codigo do Malote']}</td>
+                <td>${statusMain[j].origem['Origem']}</td>
+                <td>${statusMain[j].origem['Responsavel']}</td>
+                <td>${statusMain[j].origem['Saida']}</td>
+                <td>${statusMain[j].origem['Destino']}</td>
+                <td>${statusMain[j].origem['Transportador']}</td>
+                <td>${statusMain[j].cd['Chegada']}</td>
+                <td>${statusMain[j].cd['Responsavel pelo recebimento']}</td>
+                <td>${statusMain[j].cd['Saida']}</td>
+                <td>${statusMain[j].cd['Responsavel pela saida']}</td>
+                <td>${statusMain[j].cd['Transportador']}</td>
+                ${envioStatus}
+            `;
+        tabelaStatus.appendChild(novaLinha);
+    }
+};
+
+function loadEnvios() {
+    const tabelaEnvios = document.getElementById("envios-table-body");
+    tabelaEnvios.innerHTML = '';
+    const enviosMain = [];
+    console.log(window.envios);
+    for (let i = 0; i < window.envios.length; i++) {
+        console.log('loop envios');
+        if (window.envios[i].origem.Origem.toLowerCase() == user.toLowerCase()) { 
+            enviosMain.push(window.envios[i])
+        }
+    }
+    const enviosQt = (document.getElementById("enviosQt").value > enviosMain.length) ? enviosMain.length : document.getElementById("enviosQt").value;
+    for (let j = enviosMain.length - enviosQt; j < enviosMain.length; j++) {
         const novaLinha = document.createElement("tr");
         novaLinha.innerHTML = `
                 <td>${enviosMain[j].origem['Codigo do Malote']}</td>
@@ -90,8 +117,8 @@ function loadStatus() {
                 <td>${enviosMain[j].cd['Saida']}</td>
                 <td>${enviosMain[j].cd['Responsavel pela saida']}</td>
                 <td>${enviosMain[j].cd['Transportador']}</td>
-                ${envioStatus}
             `;
-        tabelaStatus.appendChild(novaLinha);
+        tabelaEnvios.appendChild(novaLinha);
     }
-}
+};
+loadEnvios();
