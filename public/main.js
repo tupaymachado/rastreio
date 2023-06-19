@@ -19,6 +19,10 @@ document.getElementById('statusQt').addEventListener('change', function () {
     loadStatus();
 });
 
+document.getElementById('enviosQt').addEventListener('change', function () {
+    loadEnvios();
+});
+
 function loadEnviosDB() {
     return new Promise((resolve, reject) => {
         const enviosRef = ref(database, "envios");
@@ -27,12 +31,13 @@ function loadEnviosDB() {
             const data = snapshot.val();
             window.envios = data;
             resolve(data);
+            loadEnvios();
+            loadStatus();
         }, (error) => {
             reject(error);
         });
     });
 };
-loadEnviosDB()
 
 function loadUser() {
     return new Promise((resolve, reject) => {
@@ -43,7 +48,7 @@ function loadUser() {
             resolve(data);
             const nome = document.getElementById('user-logo');
             nome.innerHTML = `/ Bem-vindo, ${user}`;
-            loadStatus();
+            loadEnviosDB();
         }, (error) => {
             reject(error);
         });
@@ -56,9 +61,8 @@ function loadStatus() {
     const tabelaStatus = document.getElementById("status-table-body");
     tabelaStatus.innerHTML = '';
     const statusMain = [];
-    console.log(window.envios);
     for (let i = 0; i < window.envios.length; i++) {
-        if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase()) { //jogar os envios selecionados para um outro array e fazer ele aparecer dali
+        if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase() && window.envios[i].cd['Saida'] != '') {
             statusMain.push(window.envios[i])
         }
     }
@@ -95,10 +99,8 @@ function loadEnvios() {
     const tabelaEnvios = document.getElementById("envios-table-body");
     tabelaEnvios.innerHTML = '';
     const enviosMain = [];
-    console.log(window.envios);
     for (let i = 0; i < window.envios.length; i++) {
-        console.log('loop envios');
-        if (window.envios[i].origem.Origem.toLowerCase() == user.toLowerCase()) { 
+        if (window.envios[i].origem.Origem.toLowerCase() == user.toLowerCase()) {
             enviosMain.push(window.envios[i])
         }
     }
@@ -121,4 +123,41 @@ function loadEnvios() {
         tabelaEnvios.appendChild(novaLinha);
     }
 };
-loadEnvios();
+
+document.getElementById("btnPop").addEventListener("click", openPopup); 
+
+function openPopup() {
+    const popup = document.getElementById("popup");
+    popup.style.display = "block";
+}
+
+document.getElementById("formulario").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const malote = document.getElementById("malote").value;
+    const responsavel = document.getElementById("responsavel").value;
+    const destino = document.getElementById("destino").value;
+    const transportador = document.getElementById("transportador").value;
+
+    const origem = {
+        "Codigo do Malote": malote,
+        "Origem": user,
+        "Responsavel": responsavel,
+        "Saida": formatDate(new Date()),
+        "Destino": destino,
+        "Transportador": transportador
+    };
+
+    console.log(origem);
+
+    // Fechar o pop-up após enviar o formulário
+    const popup = document.getElementById("popup");
+    popup.style.display = "none";
+});
+
+function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}

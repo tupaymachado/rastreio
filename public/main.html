@@ -20,7 +20,7 @@
 
     <div class="status-table"> <!-- vai mostrar os últmos 5 malotes recebidos -->
         <div id=options-container>
-            <p>Malotes vindo ou recebidos</p>
+            <p>Malotes vindo ou já recebidos</p>
             <label for="statusQt">Defina quantos recebimentos quer visualizar:</label>
             <select id="statusQt" name="statusQt">
                 <option value="5">5</option>
@@ -59,7 +59,7 @@
 
     <div class="envios-table">
         <div id=options-container>
-            <p>Malotes vindo ou recebidos</p>
+            <p>Malotes enviados</p>
             <label for="enviosQt">Defina quantos envios quer visualizar:</label>
             <select id="enviosQt" name="enviosQt">
                 <option value="5">5</option>
@@ -95,6 +95,25 @@
     </div>
 
     <div class="envio-form">
+        <button id="btnPop">Abrir Pop-up</button>
+
+        <div id="popup" style="display: none;">
+            <form id="formulario">
+                <label for="malote">Malote:</label>
+                <input type="text" id="malote" required>
+                <br>
+                <label for="responsavel">Responsável:</label>
+                <input type="text" id="responsavel" required>
+                <br>
+                <label for="destino">Destino:</label>
+                <input type="text" id="destino" required>
+                <br>
+                <label for="transportador">Transportador:</label>
+                <input type="text" id="transportador" required>
+                <br>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
 
     </div>
 
