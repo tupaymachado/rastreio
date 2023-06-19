@@ -36,10 +36,14 @@ body {
     margin: 5px;
 }
 
-table {
+#options-container {
     margin: auto;
     width: 90%;
-    border-collapse: collapse;
+}
+
+table {
+    margin: auto;
+    width: 90%;    
     background-color: white;
     text-align: center;
     color: black;
@@ -60,20 +64,8 @@ th {
     border-bottom: 1px solid black;
 }
 
-#malote,
-#origem-header,
-#responsavel,
-#data-envio,
-#destino-header,
-#transportador,
-#recebimento,
-#responsavel-cd,
-#envio,
-#responsavel-cd2,
-#transportador2,
-#recebimento2,
-#responsavel2,
-#recebido {
+td {
+    border-collapse: collapse;
     font-weight: bold;
     text-align: center;
 }

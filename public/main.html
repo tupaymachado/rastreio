@@ -18,79 +18,84 @@
         </div>
     </div>
 
-    <div class="status"> <!-- vai mostrar os últmos 5 malotes recebidos -->
+    <div class="status-table"> <!-- vai mostrar os últmos 5 malotes recebidos -->
         <div id=options-container>
-            <label for="enviosQt">Defina quantos envios quer visualizar, a começar pelo último:</label>
+            <p>Malotes vindo ou recebidos</p>
+            <label for="statusQt">Defina quantos envios quer visualizar:</label>
+            <select id="statusQt" name="statusQt">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="999">Todos</option>
+            </select>
+        </div>
+        <table class="table-container">
+            <thead>
+                <th id="origem-hd" colspan="6">Origem</th>
+                <th id="cd-hd" colspan="5">CD</th>
+                <th id="status">Status</th>
+            </thead>
+            <thead>
+                <th id="malote">Malote</th>
+                <th id="origem-header">Origem</th>
+                <th id="responsavel">Responsável</th>
+                <th id="data-envio">Envio</th>
+                <th id="destino-header">Destino</th>
+                <th id="transportador">Transportador</th>
+                <th id="recebimento">Recebimento</th>
+                <th id="responsavel-cd">Responsável</th>
+                <th id="envio">Envio</th>
+                <th id="responsavel-cd2">Responsável</th>
+                <th id="transportador2">Transportador</th>
+                <th id="recebido">Status de Recebimento</th>
+            </thead>
+            <tbody id="status-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <br><br>
+
+    <div class="envios-table">
+        <div id=options-container>
+            <p>Malotes vindo ou recebidos</p>
+            <label for="enviosQt">Defina quantos envios quer visualizar:</label>
             <select id="enviosQt" name="enviosQt">
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
                 <option value="20">20</option>
-                <option value="all">Todos</option>
+                <option value="999">Todos</option>
             </select>
         </div>
-        <table class="container-table">
+        <table class="table-container">
             <thead>
-                <tr>
-                    <th id="origem-hd">Origem</th>
-                    <th id="cd-hd">CD</th>
-                    <th>Status</th>
-                </tr>
+                <th id="origem-hd" colspan="6">Origem</th>
+                <th id="cd-hd" colspan="5">CD</th>
+                <th id="status">Status</th>
             </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <table id="tabela-origem">
-                            <thead>
-                                <tr>
-                                    <th id="malote">Malote</th>
-                                    <th id="origem-header">Origem</th>
-                                    <th id="responsavel">Responsável</th>
-                                    <th id="data-envio">Envio</th>
-                                    <th id="destino-header">Destino</th>
-                                    <th id="transportador">Transportador</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                </tr>
-                                <!-- Adicione mais linhas conforme necessário -->
-                            </tbody>
-                        </table>
-                    </td>
-                    <td>
-                        <table id="tabela-cd">
-                            <thead>
-                                <tr>
-                                    <th id="recebimento">Recebimento</th>
-                                    <th id="responsavel-cd">Responsável</th>
-                                    <th id="envio">Envio</th>
-                                    <th id="responsavel-cd2">Responsável</th>
-                                    <th id="transportador2">Transportador</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td>
-                        <table id="tabela-recebido">
-                            <thead>
-                                <tr>
-                                    <th id="recebido">Status de Recebimento</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+            <thead>
+                <th id="malote">Malote</th>
+                <th id="origem-header">Origem</th>
+                <th id="responsavel">Responsável</th>
+                <th id="data-envio">Envio</th>
+                <th id="destino-header">Destino</th>
+                <th id="transportador">Transportador</th>
+                <th id="recebimento">Recebimento</th>
+                <th id="responsavel-cd">Responsável</th>
+                <th id="envio">Envio</th>
+                <th id="responsavel-cd2">Responsável</th>
+                <th id="transportador2">Transportador</th>
+                <th id="recebido">Status de Recebimento</th>
+            </thead>
+            <tbody id="envios-table-body">
             </tbody>
         </table>
+    </div>
+
+    <div class="envio-form">
+
     </div>
 
     <script src="script.js" type="module"></script>
