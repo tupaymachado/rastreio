@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCCVI3ns8bDvMKgHX_H5u6y4TeF7uf4K84",
@@ -57,13 +56,14 @@ function loadUser() {
 };
 loadUser();
 
-function loadStatus() {
+function loadStatus() { //função que carrega a tabela de status
     const tabelaStatus = document.getElementById("status-table-body");
     tabelaStatus.innerHTML = '';
     const statusMain = [];
     for (let i = 0; i < window.envios.length; i++) {
         if (window.envios[i].origem.Destino.toLowerCase() == user.toLowerCase() && window.envios[i].cd['Saida'] != '') {
-            statusMain.push(window.envios[i])
+            const envio = { ...window.envios[i], index: i };
+            statusMain.push(envio);
         }
     }
     const statusQt = (document.getElementById("statusQt").value > statusMain.length) ? statusMain.length : document.getElementById("statusQt").value;
@@ -72,7 +72,8 @@ function loadStatus() {
         if (!statusMain[j].destino['Chegada'] && !statusMain[j].cd['Responsavel pela saida']) {
             envioStatus = `<td>Em trânsito</td>`;
         } else if (!statusMain[j].destino['Chegada']) {
-            envioStatus = `<td><input type='checkbox'>Recebido?</input></td>`; //inserir função que muda o status para recebido
+            envioStatus = `<td><button class='btn btn-primary btn-sm' onClick='confirmReceb(${statusMain[j].index})'>Recebido?</button></td>`; //inserir função que muda o status para recebido
+
         } else {
             envioStatus = `<td>Recebido</td>`;
         }
@@ -95,7 +96,7 @@ function loadStatus() {
     }
 };
 
-function loadEnvios() {
+function loadEnvios() { //função que carrega a tabela de envios
     const tabelaEnvios = document.getElementById("envios-table-body");
     tabelaEnvios.innerHTML = '';
     const enviosMain = [];
@@ -124,40 +125,62 @@ function loadEnvios() {
     }
 };
 
-document.getElementById("btnPop").addEventListener("click", openPopup); 
-
-function openPopup() {
-    const popup = document.getElementById("popup");
-    popup.style.display = "block";
+window.confirmReceb = function confirmReceb(index) {
+    const confirmacao = confirm("Deseja confirmar o recebimento?");
+    console.log(index);
+    if (confirmacao) {
+        const data = new Date();
+        const dia = String(data.getDate()).padStart(2, "0");
+        const mes = String(data.getMonth() + 1).padStart(2, "0");
+        const ano = data.getFullYear();
+        const dataAtual = `${dia}/${mes}/${ano}`;
+        const enviosRef = ref(database, `envios/${index}/destino`);
+        const updates = {
+            Chegada: dataAtual,
+            'Responsavel pelo recebimento': user
+        };
+        update(enviosRef, updates); //atualiza o banco de dados
+        loadEnviosDB();
+    }
 }
 
-document.getElementById("formulario").addEventListener("submit", function (event) {
-    event.preventDefault();
+document.getElementById('envioBtn').addEventListener('click', novoEnvio)
 
-    const malote = document.getElementById("malote").value;
-    const responsavel = document.getElementById("responsavel").value;
-    const destino = document.getElementById("destino").value;
-    const transportador = document.getElementById("transportador").value;
-
-    const origem = {
-        "Codigo do Malote": malote,
-        "Origem": user,
-        "Responsavel": responsavel,
-        "Saida": formatDate(new Date()),
-        "Destino": destino,
-        "Transportador": transportador
-    };
-
-    console.log(origem);
-
-    // Fechar o pop-up após enviar o formulário
-    const popup = document.getElementById("popup");
-    popup.style.display = "none";
-});
-
-function formatDate(date) {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+function novoEnvio() {
+    const confirmacao = confirm("Deseja salvar o envio?");
+    if (!confirmacao) {
+        const data = new Date();
+        const dia = String(data.getDate()).padStart(2, "0");
+        const mes = String(data.getMonth() + 1).padStart(2, "0");
+        const ano = data.getFullYear();
+        const dataAtual = `${dia}/${mes}/${ano}`;
+        const malote = document.getElementById('malote').value;
+        const responsavel = document.getElementById('responsavel').value;
+        const destino = document.getElementById('destino').value;
+        const transportador = document.getElementById('transportador').value;
+        const envio = {
+            origem: {
+                'Codigo do Malote': malote,
+                Origem: user,
+                Responsavel: responsavel,
+                Saida: dataAtual,
+                Destino: destino,
+                Transportador: transportador
+            },
+            cd: {
+                Chegada: '',
+                'Responsavel pelo recebimento': '',
+                Saida: '',
+                'Responsavel pela saida': '',
+                Transportador: ''
+            },
+            destino: {
+                Chegada: '',
+                'Responsavel pelo recebimento': '',
+            }
+        };
+        const enviosRef = ref(database, `envios/`);//referencia o banco de dados
+        update(enviosRef, { [envios.length]: envio });//atualiza o banco de dados
+        loadEnviosDB();
+    }
 }

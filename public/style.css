@@ -69,3 +69,16 @@ td {
     font-weight: bold;
     text-align: center;
 }
+
+#exampleModal {
+    color: black;
+}
+
+/*centralizar elemento #cadastroBtn */
+#cadastroBtn {
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
