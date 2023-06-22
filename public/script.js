@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCCVI3ns8bDvMKgHX_H5u6y4TeF7uf4K84",
@@ -12,7 +12,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const database = getDatabase(app);
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
@@ -41,7 +40,6 @@ function validatePassword(password) {
     return !!password;
 }
 
-//create a login function with firebase auth that redirects user to status.html if login is successful
 function login() {
     const email = emailInput.value;
     const password = passwordInput.value;
@@ -49,21 +47,28 @@ function login() {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const uid = userCredential.user.uid;
-            localStorage.setItem('uid', uid);
-            window.location.href = "main.html";
+            localStorage.setItem("uid", uid);
+            const userRef = ref(database, `users/${uid}`);
+
+            return new Promise((resolve, reject) => {
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+            });
+        })
+        .then((data) => {
+            console.log("Dados recebidos:", data);
+            if (data == 'CD') {
+                window.location.href = "mainCD.html";
+            } else {
+                window.location.href = "main.html";
+            }
         })
         .catch((error) => {
             console.log(error.code);
             alert("Erro ao realizar login");
         });
 }
-
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log("UID do usuário logado:", user.uid);
-    } else {
-        console.log("Nenhum usuário logado");
-    }
-});
-
-// function loadShowroomData() {
