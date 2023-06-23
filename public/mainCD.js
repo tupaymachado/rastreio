@@ -1,8 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-import { loadDB, loadUser, loadEnvios, loadRecebimentos } from "./loaders.js";
-import { novoEnvio } from "./util.js";
-import { createTableRows, createStatusColumn } from "./createTable.js";
+import { loadUser } from "./loaders.js";
+import { novoEnvio, confirmReceb } from "./util.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCCVI3ns8bDvMKgHX_H5u6y4TeF7uf4K84",
@@ -17,16 +16,9 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const uid = localStorage.getItem('uid');
 
-document.getElementById('statusQt').addEventListener('change', function () { //se não passar o false, ele carrega como true (?) e tenta carregar createTableRowsCD
-    const statusQt = document.getElementById('statusQt').value;
-    loadRecebimentos(false);
-});
-document.getElementById('enviosQt').addEventListener('change', loadEnvios);
-document.getElementById('envioBtn').addEventListener('click', novoEnvio);
-
 loadUser();
 
-window.confirmReceb = function confirmReceb(index, etapa) { //essa merda só funciona se eu colocar o window. antes
+window.confirmCD = function confirmReceb(index, etapa) { //essa merda só funciona se eu colocar o window. antes
     const confirmacao = confirm("Deseja confirmar o recebimento?");
     if (confirmacao) {
         const data = new Date();

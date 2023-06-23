@@ -41,6 +41,13 @@ body {
     width: 90%;
 }
 
+table tr td:nth-child(6), table tr th:nth-child(6), table tr td:nth-child(11), table tr th:nth-child(11) {
+    border-right: 1px solid black;
+}
+table tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
 table {
     margin: auto;
     width: 90%;    
@@ -59,9 +66,9 @@ td {
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #d5d5d5;
     text-align: center;
-    border-bottom: 1px solid black;
+    border-right: 1px solid black;
 }
 
 td {
