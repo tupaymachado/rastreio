@@ -84,18 +84,28 @@ export function createTableRowsCD(data) {
 export function createStatusColumnCD(envio) {
     let cells = '';
     if (!envio.cd['Chegada'] && !envio.cd['Responsavel pelo recebimento']) {
-        cells = `<td><button class='btn btn-primary btn-sm' onClick='confirmCD(${envio.index})'>Confirmar recebimento</button></td>
-            <td><input type='text' id='respChegada' placeholder='Responsável'></input></td>
+        cells = `
+            <td><button class='btn btn-primary btn-sm' onClick="confirmCD(${envio.index}, 'chegada')">Confirmar recebimento</button></td>
+            <td><input type='text' id='respChegada${envio.index}' placeholder='Responsável'></input></td>
             <td>CONFIRME A CHEGADA</td>
             <td>CONFIRME A CHEGADA</td>
             <td>CONFIRME A CHEGADA</td>
-    `;} else {
+            `;
+    } else if (envio.cd['Chegada'] && !envio.cd['Responsavel pela saida']) {
         cells = `
             <td>${envio.cd['Chegada']}</td>
             <td>${envio.cd['Responsavel pelo recebimento']}</td>
-            <td><button class='btn btn-primary btn-sm' onClick='confirmCD(${envio.index})'>Confirmar saida</button></td>
-            <td><input type='text' id='respSaida' placeholder='Responsável'></input></td>
-            <td><input type='text' id='transportador' placeholder='Transportador'></input></td>
+            <td><button class='btn btn-primary btn-sm' onClick='confirmCD('${envio.index}', 'saida')'>Confirmar saida</button></td>
+            <td><input type='text' id='respSaida${envio.index}' placeholder='Responsável'></input></td>
+            <td><input type='text' id='transportador${envio.index}' placeholder='Transportador'></input></td>
+        `;
+    } else {
+        cells = `
+            <td>${envio.cd['Chegada']}</td>
+            <td>${envio.cd['Responsavel pelo recebimento']}</td>
+            <td>${envio.cd['Saida']}</td>
+            <td>${envio.cd['Responsavel pela saida']}</td>
+            <td>${envio.cd['Transportador']}</td>
         `;
     }
     return cells;

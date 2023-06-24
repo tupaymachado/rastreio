@@ -26,7 +26,7 @@ document.getElementById('envioBtn').addEventListener('click', novoEnvio);
 
 loadUser();
 
-window.confirmReceb = function confirmReceb(index, etapa) { //essa merda só funciona se eu colocar o window. antes
+window.confirmReceb = function confirmReceb(index) { //essa merda só funciona se eu colocar o window. antes
     const confirmacao = confirm("Deseja confirmar o recebimento?");
     if (confirmacao) {
         const data = new Date();
