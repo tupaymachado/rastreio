@@ -61,7 +61,6 @@ function login() {
             });
         })
         .then((data) => {
-            console.log("Dados recebidos:", data);
             if (data == 'CD') {
                 window.location.href = "mainCD.html";
             } else {

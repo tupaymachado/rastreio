@@ -1,20 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+/* import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"; */
 import { createTableRows, createTableRowsCD } from "./createTable.js";
-import { novoEnvio, confirmReceb } from "./util.js";
+import { database, app, ref, onValue } from "./config.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCCVI3ns8bDvMKgHX_H5u6y4TeF7uf4K84",
-    authDomain: "rastreio-afdb3.firebaseapp.com",
-    projectId: "rastreio-afdb3",
-    storageBucket: "rastreio-afdb3.appspot.com",
-    messagingSenderId: "1002301474873",
-    appId: "1:1002301474873:web:fcc09fd36b766c8c77a5e8"
-};
-
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const uid = localStorage.getItem('uid');
+const uid = localStorage.getItem('uid'); 
 
 export function loadUser() { //carrega o usuário, confere se é do CD e chama loadDB, passando o parâmetro isCD
     return new Promise((resolve, reject) => {
@@ -35,15 +23,14 @@ export function loadUser() { //carrega o usuário, confere se é do CD e chama l
     )
 };
 
-export function loadDB(isCD) { //carrega o banco de dados e chama loadEnvios e loadRecebimentos
+export function loadDB(isCD) { //refazer objetos do /envios
     return new Promise((resolve, reject) => {
         const enviosRef = ref(database, "envios");
-        onValue(enviosRef, (snapshot) => {
+     onValue(enviosRef, (snapshot) => {
             const data = snapshot.val();
             window.envios = data;
             resolve(data);
             if (isCD) {
-                console.log('loadDB rodou certo');
                 loadRecebimentos(isCD);
             } else {
                 loadEnvios();
@@ -72,7 +59,7 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
             }
         }
     }
-    const statusQt = (document.getElementById("statusQt").value > statusMain.length) ? statusMain.length : document.getElementById("statusQt").value;
+    const statusQt = (document.getElementById("statusQt").value > statusMain.length) ? statusMain.length : document.getElementById("statusQt").value; //confere se o valor do input é maior que o tamanho do array
     const rows = statusMain.slice(-statusQt);
     if (isCD) {
         createTableRowsCD(rows)
@@ -80,6 +67,7 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
         createTableRows(rows, tabelaStatus, true);
     }
 }
+
 export function loadEnvios() {
     const tabelaEnvios = document.getElementById("envios-table-body");
     const enviosMain = [];
