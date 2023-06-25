@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 import { novoEnvio, confirmReceb } from "./util.js";
+import { loadDB } from "./loaders.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCCVI3ns8bDvMKgHX_H5u6y4TeF7uf4K84",
@@ -72,7 +73,10 @@ export function createTableRowsCD(data) {
             <td>${data[i].origem['Saida']}</td>
             <td>${data[i].origem['Destino']}</td>
             <td>${data[i].origem['Transportador']}</td>
-            ${createStatusColumnCD(data[i])}`
+            ${createStatusColumnCD(data[i])}
+            <td>${data[i].destino['Chegada']}</td>
+            <td>${data[i].destino['Responsavel pelo recebimento']}</td>
+            `
             ;
         rows.push(novaLinha);
     }
