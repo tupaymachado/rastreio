@@ -86,7 +86,7 @@ export function createStatusColumnCD(envio) {
     if (!envio.cd['Chegada'] && !envio.cd['Responsavel pelo recebimento']) {
         cells = `
             <td><button class='btn btn-primary btn-sm' onClick="confirmCD(${envio.index}, 'chegada')">Confirmar recebimento</button></td>
-            <td><input type='text' id='respChegada${envio.index}' placeholder='Responsável'></input></td>
+            <td><input type='text' id='respChegada${envio.index}' placeholder='Responsável Receb.'></input></td>
             <td>CONFIRME A CHEGADA</td>
             <td>CONFIRME A CHEGADA</td>
             <td>CONFIRME A CHEGADA</td>
@@ -95,8 +95,8 @@ export function createStatusColumnCD(envio) {
         cells = `
             <td>${envio.cd['Chegada']}</td>
             <td>${envio.cd['Responsavel pelo recebimento']}</td>
-            <td><button class='btn btn-primary btn-sm' onClick='confirmCD('${envio.index}', 'saida')'>Confirmar saida</button></td>
-            <td><input type='text' id='respSaida${envio.index}' placeholder='Responsável'></input></td>
+            <td><button class='btn btn-primary btn-sm' onClick="confirmCD(${envio.index}, 'saida')">Confirmar saida</button></td>
+            <td><input type='text' id='respSaida${envio.index}' placeholder='Responsável Saída'></input></td>
             <td><input type='text' id='transportador${envio.index}' placeholder='Transportador'></input></td>
         `;
     } else {
