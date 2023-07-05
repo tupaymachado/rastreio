@@ -1,8 +1,8 @@
-/* import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"; */
+import { remove } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 import { createTableRows, createTableRowsCD } from "./createTable.js";
-import { database, app, ref, onValue } from "./config.js";
+import { database, ref, onValue } from "./config.js";
 
-const uid = localStorage.getItem('uid'); 
+const uid = localStorage.getItem('uid');
 
 export function loadUser() { //carrega o usuário, confere se é do CD e chama loadDB, passando o parâmetro isCD
     return new Promise((resolve, reject) => {
@@ -14,7 +14,6 @@ export function loadUser() { //carrega o usuário, confere se é do CD e chama l
             const nome = document.getElementById('user-logo');
             nome.innerHTML = `/ Bem-vindo, ${user}`;
             const isCD = (user == 'CD') ? true : false;
-            console.log('loadUser rodou');
             loadDB(isCD);
         }, (error) => {
             reject(error);
@@ -26,7 +25,7 @@ export function loadUser() { //carrega o usuário, confere se é do CD e chama l
 export function loadDB(isCD) { //refazer objetos do /envios
     return new Promise((resolve, reject) => {
         const enviosRef = ref(database, "envios");
-     onValue(enviosRef, (snapshot) => {
+        onValue(enviosRef, (snapshot) => {
             const data = snapshot.val();
             window.envios = data;
             resolve(data);
@@ -69,6 +68,9 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
 }
 
 export function loadEnvios() {
+    if (user == 'Pelotas - Laranjal') {
+        limpaDB();
+    }
     const tabelaEnvios = document.getElementById("envios-table-body");
     const enviosMain = [];
     for (let i = 0; i < window.envios.length; i++) {
@@ -80,3 +82,32 @@ export function loadEnvios() {
     const rows = enviosMain.slice(-enviosQt);
     createTableRows(rows, tabelaEnvios, false);
 }
+
+export function limpaDB() {
+    const dataAtual = new Date();
+    for (let i = 1; i < window.envios.length; i++) {
+        console.log(i)
+        if (window.envios[i]?.destino?.Chegada == '') {
+            console.log(i + 'IF - Chegada vazia');
+            continue; //
+        } else {
+            console.log(i + 'ELSE - Chegada preenchida');
+            let dataRecebimento = new Date(window.envios[i].destino.Chegada);
+            console.log(dataRecebimento);
+            const diferencaMilissegundos = dataAtual - dataRecebimento;
+            const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
+            console.log(diferencaDias);
+        }
+    }
+}
+
+/* if (diferencaDias > 30) {
+            const itemRef = ref(database, `envios/${i}`);
+            remove(itemRef)
+                .then(() => {
+                    console.log(i + " Item excluído com sucesso!");
+                })
+                .catch((error) => {
+                    console.error("Erro ao excluir o item:", error);
+                });
+        } */

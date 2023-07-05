@@ -24,6 +24,7 @@ export function confirmReceb(index, etapa) { //recebe um index, referente a posi
 export function novoEnvio() {
     const confirmacao = confirm("Deseja salvar o envio?");
     if (confirmacao) {
+        //refazer a forma como a data é guardada - usar o Date() e formatar no front end
         const data = new Date();
         const dia = String(data.getDate()).padStart(2, "0");
         const mes = String(data.getMonth() + 1).padStart(2, "0");
