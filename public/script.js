@@ -48,28 +48,11 @@ function login() {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const uid = userCredential.user.uid;
+            console.log(userCredential);
             localStorage.setItem("uid", uid);
             const userRef = ref(database, `users/${uid}`);
-
             return new Promise((resolve, reject) => {
                 onValue(userRef, (snapshot) => {
-                    const user = firebase.auth().currentUser;
-                    console.log(user);
-
-                    // Verifica se o usuário está autenticado
-                    if (user) {
-                        // O usuário está autenticado, obtém o token de autenticação
-                        user.getIdToken().then((token) => {
-                            // Use o token de autenticação conforme necessário
-                            console.log("Token de autenticação:", token);
-                        }).catch((error) => {
-                            // Trate possíveis erros ao obter o token
-                            console.error("Erro ao obter o token de autenticação:", error);
-                        });
-                    } else {
-                        // O usuário não está autenticado, faça o login primeiro
-                        console.log("Usuário não autenticado, faça o login.");
-                    }
                     const data = snapshot.val();
                     resolve(data);
                 }, (error) => {
@@ -77,16 +60,15 @@ function login() {
                 });
             });
         })
-        /* .then((data) => { 
+        .then((data) => {
             if (data == 'CD') {
                 window.location.href = "mainCD.html";
             } else {
                 window.location.href = "main.html";
             }
-        }) */
+        })
         .catch((error) => {
             console.log(error.code);
             alert("Erro ao realizar login");
         });
 }
-

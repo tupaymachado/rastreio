@@ -49,19 +49,18 @@ export function createTableRowsCD(data) {
     for (let i = 0; i < data.length; i++) {
         const novaLinha = document.createElement("tr");
         novaLinha.innerHTML = `
-            <td>${data[i].origem['Codigo do Malote']}</td>
-            <td>${data[i].origem['Origem']}</td>
-            <td>${data[i].origem['Responsavel']}</td>
-            <td>${data[i].origem['Saida']}</td>
-            <td>${data[i].origem['Destino']}</td>
-            <td>${data[i].origem['Transportador']}</td>
-            ${createStatusColumnCD(data[i])}
-            <td>${data[i].destino['Chegada']}</td>
-            <td>${data[i].destino['Responsavel pelo recebimento']}</td>
-            `
-            ;
+          <td>${data[i].origem['Codigo do Malote']}</td>
+          <td>${data[i].origem['Origem']}</td>
+          <td>${data[i].origem['Responsavel']}</td>
+          <td>${data[i].origem['Saida']}</td>
+          <td>${data[i].origem['Destino']}</td>
+          <td>${data[i].origem['Transportador']}</td>
+          ${createStatusColumnCD(data[i])}
+          <td>${data[i].destino['Chegada'] !== '' ? data[i].destino['Chegada'] : 'Em transporte'}</td>
+          <td>${data[i].destino['Responsavel pelo recebimento'] !== '' ? data[i].destino['Responsavel pelo recebimento'] : 'Em transporte'}</td>
+        `;
         rows.push(novaLinha);
-    }
+      }      
     rows.forEach(row => {
         tabela.appendChild(row);
     });
