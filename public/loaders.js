@@ -58,6 +58,7 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
             }
         }
     }
+    console.log(statusMain);
     const statusQt = (document.getElementById("statusQt").value > statusMain.length) ? statusMain.length : document.getElementById("statusQt").value; //confere se o valor do input é maior que o tamanho do array
     const rows = statusMain.slice(-statusQt);
     if (isCD) {
@@ -86,9 +87,7 @@ export function loadEnvios() {
 export function limpaDB() {
     const dataAtual = new Date();
     for (let i = 1; i < window.envios.length; i++) {
-        console.log(i)
         if (window.envios[i]?.destino?.Chegada == '') {
-            console.log(i + 'IF - Chegada vazia');
             continue; //
         } else {
             console.log(i + 'ELSE - Chegada preenchida');

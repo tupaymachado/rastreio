@@ -35,13 +35,9 @@ window.confirmReceb = function confirmReceb(index) { //essa merda só funciona s
     const confirmacao = confirm("Deseja confirmar o recebimento?");
     if (confirmacao) {
         const data = new Date();
-        const dia = String(data.getDate()).padStart(2, "0");
-        const mes = String(data.getMonth() + 1).padStart(2, "0");
-        const ano = data.getFullYear();
-        const dataAtual = `${dia}/${mes}/${ano}`;
         const enviosRef = ref(database, `envios/${index}/destino`);
         const updates = {
-            Chegada: dataAtual,
+            Chegada: data,
             'Responsavel pelo recebimento': user //arrumar para ele pegar o .value do input da tabela
         };
         update(enviosRef, updates); //atualiza o banco de dados

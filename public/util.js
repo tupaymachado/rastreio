@@ -26,10 +26,6 @@ export function novoEnvio() {
     if (confirmacao) {
         //refazer a forma como a data é guardada - usar o Date() e formatar no front end
         const data = new Date();
-        const dia = String(data.getDate()).padStart(2, "0");
-        const mes = String(data.getMonth() + 1).padStart(2, "0");
-        const ano = data.getFullYear();
-        const dataAtual = `${dia}/${mes}/${ano}`;
         const malote = document.getElementById('malote').value;
         const responsavel = document.getElementById('responsavel').value;
         const destino = document.getElementById('destino').value;
@@ -39,7 +35,7 @@ export function novoEnvio() {
                 'Codigo do Malote': malote,
                 Origem: user,
                 Responsavel: responsavel,
-                Saida: dataAtual,
+                Saida: data,
                 Destino: destino,
                 Transportador: transportador
             },

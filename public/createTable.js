@@ -7,12 +7,12 @@ export function createTableRows(data, tabela, isRecebimento) {
             <td>${data[i].origem['Codigo do Malote']}</td>
             <td>${data[i].origem['Origem']}</td>
             <td>${data[i].origem['Responsavel']}</td>
-            <td>${data[i].origem['Saida']}</td>
+            ${convertData(data[i].origem['Saida'])}
             <td>${data[i].origem['Destino']}</td>
             <td>${data[i].origem['Transportador']}</td>
-            <td>${data[i].cd['Chegada']}</td>
+            ${convertData(data[i].cd['Chegada'])}</td>
             <td>${data[i].cd['Responsavel pelo recebimento']}</td>
-            <td>${data[i].cd['Saida']}</td>
+            ${convertData(data[i].cd['Saida'])}
             <td>${data[i].cd['Responsavel pela saida']}</td>
             <td>${data[i].cd['Transportador']}</td>
             ${isRecebimento ? createStatusColumn(true, data[i]) : createStatusColumn(false, data[i])}
@@ -22,6 +22,15 @@ export function createTableRows(data, tabela, isRecebimento) {
     rows.forEach(row => {
         tabela.appendChild(row);
     });
+}
+
+export function convertData(date) {
+    const data = date ? new Date(date) : null;
+    const dia = data ? String(data.getDate()).padStart(2, "0") : "";
+    const mes = data ? String(data.getMonth() + 1).padStart(2, "0") : "";
+    const ano = data ? data.getFullYear() : "";
+    const dataFormatada = dia && mes && ano ? `${dia}/${mes}/${ano}` : "";
+    return `<td>${dataFormatada}</td>`;
 }
 
 export function createStatusColumn(isRecebimento, envio) {
@@ -36,7 +45,7 @@ export function createStatusColumn(isRecebimento, envio) {
         }
     } else {
         envioStatus =
-            `<td>${envio.destino['Chegada']}</td>
+            `${convertData(envio.destino['Chegada'])}</td>
             <td>${envio.destino['Responsavel pelo recebimento']}</td>`;
     }
     return envioStatus;
@@ -52,7 +61,7 @@ export function createTableRowsCD(data) {
           <td>${data[i].origem['Codigo do Malote']}</td>
           <td>${data[i].origem['Origem']}</td>
           <td>${data[i].origem['Responsavel']}</td>
-          <td>${data[i].origem['Saida']}</td>
+          ${convertData(data[i].origem['Saida'])}
           <td>${data[i].origem['Destino']}</td>
           <td>${data[i].origem['Transportador']}</td>
           ${createStatusColumnCD(data[i])}
