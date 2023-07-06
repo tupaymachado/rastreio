@@ -48,7 +48,6 @@ function login() {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const uid = userCredential.user.uid;
-            console.log(userCredential);
             localStorage.setItem("uid", uid);
             const userRef = ref(database, `users/${uid}`);
             return new Promise((resolve, reject) => {

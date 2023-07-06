@@ -1,4 +1,4 @@
-import { remove } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 import { createTableRows, createTableRowsCD } from "./createTable.js";
 import { database, ref, onValue } from "./config.js";
 
@@ -58,7 +58,6 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
             }
         }
     }
-    console.log(statusMain);
     const statusQt = (document.getElementById("statusQt").value > statusMain.length) ? statusMain.length : document.getElementById("statusQt").value; //confere se o valor do input é maior que o tamanho do array
     const rows = statusMain.slice(-statusQt);
     if (isCD) {
@@ -68,7 +67,7 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
     }
 }
 
-export function loadEnvios() {
+export function loadEnvios() { //Erro quando acessa um item vazio do index de window.envios
     if (user == 'Pelotas - Laranjal') {
         limpaDB();
     }
@@ -86,27 +85,24 @@ export function loadEnvios() {
 
 export function limpaDB() {
     const dataAtual = new Date();
-    for (let i = 1; i < window.envios.length; i++) {
-        if (window.envios[i]?.destino?.Chegada == '') {
-            continue; //
+    for (let i = 0; i < window.envios.length; i++) {
+        if (!window.envios[i]?.destino?.Chegada) {
+            console.log(i + " Não tem data de chegada")
+            continue;
         } else {
-            console.log(i + 'ELSE - Chegada preenchida');
             let dataRecebimento = new Date(window.envios[i].destino.Chegada);
-            console.log(dataRecebimento);
             const diferencaMilissegundos = dataAtual - dataRecebimento;
             const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
-            console.log(diferencaDias);
+            if (diferencaDias > 30) {
+                const itemRef = ref(database, `envios/${i}`);
+                set(itemRef, null)
+                    .then(() => {
+                        console.log(i + " Item excluído com sucesso!");
+                    })
+                    .catch((error) => {
+                        console.error("Erro ao excluir o item:", error);
+                    });
+            }
         }
     }
 }
-
-/* if (diferencaDias > 30) {
-            const itemRef = ref(database, `envios/${i}`);
-            remove(itemRef)
-                .then(() => {
-                    console.log(i + " Item excluído com sucesso!");
-                })
-                .catch((error) => {
-                    console.error("Erro ao excluir o item:", error);
-                });
-        } */
