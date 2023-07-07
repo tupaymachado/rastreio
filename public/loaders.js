@@ -27,7 +27,7 @@ export function loadDB(isCD) { //refazer objetos do /envios
         const enviosRef = ref(database, "envios");
         onValue(enviosRef, (snapshot) => {
             const data = snapshot.val();
-            window.envios = data;
+            window.envios = data/* .filter(Boolean); */
             resolve(data);
             if (isCD) {
                 loadRecebimentos(isCD);

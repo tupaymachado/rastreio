@@ -24,12 +24,20 @@ export function confirmReceb(index, etapa) { //recebe um index, referente a posi
 export function novoEnvio() {
     const confirmacao = confirm("Deseja salvar o envio?");
     if (confirmacao) {
-        //refazer a forma como a data é guardada - usar o Date() e formatar no front end
-        const data = new Date();
         const malote = document.getElementById('malote').value;
         const responsavel = document.getElementById('responsavel').value;
         const destino = document.getElementById('destino').value;
         const transportador = document.getElementById('transportador').value;
+        if (malote === '' || responsavel === '' || transportador === '') {
+            alert("Preencha todos os campos.");
+            return;
+        }
+        if (destino === 'Selecione') {
+            alert("Selecione um destino válido.");
+            return;
+        }
+
+        const data = new Date();
         const envio = {
             origem: {
                 'Codigo do Malote': malote,
@@ -51,7 +59,8 @@ export function novoEnvio() {
                 'Responsavel pelo recebimento': '',
             }
         };
-        const enviosRef = ref(database, `envios/`);//referencia o banco de dados
-        update(enviosRef, { [envios.length]: envio });//atualiza o banco de dados
+
+        const enviosRef = ref(database, `envios/`);
+        update(enviosRef, { [window.envios?.length ?? 0]: envio }); //ele está sobreescrevendo o envio anterior, não adicionando um novo
     }
 }
