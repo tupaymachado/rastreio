@@ -61,6 +61,9 @@ export function novoEnvio() {
         };
 
         const enviosRef = ref(database, `envios/`);
-        update(enviosRef, { [window.envios?.length ?? 0]: envio }); //ele está sobreescrevendo o envio anterior, não adicionando um novo
+        update(enviosRef, { [window.dbLength]: envio }); //ele está sobreescrevendo o envio anterior, não adicionando um novo
+        var myModalEl = document.getElementById('exampleModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl); 
+        modal.hide();
     }
 }

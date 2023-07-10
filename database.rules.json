@@ -1,6 +1,12 @@
 {
   "rules": {
-    ".read": "now < 1688266800000",  // 2023-7-2
-    ".write": "now < 1688266800000",  // 2023-7-2
+    "envios": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "users": {
+      ".read": "auth != null",
+      ".write": "false"
+    }
   }
 }

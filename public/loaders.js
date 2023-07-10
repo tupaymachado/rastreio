@@ -27,7 +27,9 @@ export function loadDB(isCD) { //refazer objetos do /envios
         const enviosRef = ref(database, "envios");
         onValue(enviosRef, (snapshot) => {
             const data = snapshot.val();
-            window.envios = data/* .filter(Boolean); */
+            window.db = data;
+            window.dbLength = data ? data.length : 0;
+            window.envios = data ? data.filter(Boolean) : []; //.filter(Boolean) filtra os índices vazios do vetor, e facilita o trabalho; em caso do DB ficar sem nenhum item, é preciso definir essa variálvel como um array vazio
             resolve(data);
             if (isCD) {
                 loadRecebimentos(isCD);
@@ -87,13 +89,13 @@ export function limpaDB() {
     const dataAtual = new Date();
     for (let i = 0; i < window.envios.length; i++) {
         if (!window.envios[i]?.destino?.Chegada) {
-            console.log(i + " Não tem data de chegada")
             continue;
         } else {
             let dataRecebimento = new Date(window.envios[i].destino.Chegada);
             const diferencaMilissegundos = dataAtual - dataRecebimento;
             const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
-            if (diferencaDias > 30) {
+            if (diferencaDias > 30) { //
+                
                 const itemRef = ref(database, `envios/${i}`);
                 set(itemRef, null)
                     .then(() => {

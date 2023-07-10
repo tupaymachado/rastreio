@@ -65,11 +65,11 @@ export function createTableRowsCD(data) {
           <td>${data[i].origem['Destino']}</td>
           <td>${data[i].origem['Transportador']}</td>
           ${createStatusColumnCD(data[i])}
-          <td>${data[i].destino['Chegada'] !== '' ? data[i].destino['Chegada'] : 'Em transporte'}</td>
+          ${data[i].destino['Chegada'] !== '' ? convertData(data[i].destino['Chegada']) : `<td>Em transporte</td>`}
           <td>${data[i].destino['Responsavel pelo recebimento'] !== '' ? data[i].destino['Responsavel pelo recebimento'] : 'Em transporte'}</td>
         `;
         rows.push(novaLinha);
-      }      
+    }
     rows.forEach(row => {
         tabela.appendChild(row);
     });
@@ -87,7 +87,7 @@ export function createStatusColumnCD(envio) {
             `;
     } else if (envio.cd['Chegada'] && !envio.cd['Responsavel pela saida']) {
         cells = `
-            <td>${envio.cd['Chegada']}</td>
+            ${convertData(envio.cd['Chegada'])}
             <td>${envio.cd['Responsavel pelo recebimento']}</td>
             <td><button class='btn btn-primary btn-sm' onClick="confirmCD(${envio.index}, 'saida')">Confirmar saida</button></td>
             <td><input type='text' id='respSaida${envio.index}' placeholder='Responsável Saída'></input></td>
