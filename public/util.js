@@ -4,22 +4,24 @@ import { database } from "./config.js";
 
 const uid = localStorage.getItem('uid');
 
-export function confirmReceb(index, etapa) { //recebe um index, referente a posição do envio no array do banco de dados
+/* export function confirmReceb(index) { //recebe um index, referente a posição do envio no array do banco de dados
+    console.log(index + ' confirmReceb')
     const confirmacao = confirm("Deseja confirmar o recebimento?");
     if (confirmacao) {
         const data = new Date();
-        const dia = String(data.getDate()).padStart(2, "0");
+        /* const dia = String(data.getDate()).padStart(2, "0");
         const mes = String(data.getMonth() + 1).padStart(2, "0");
         const ano = data.getFullYear();
         const dataAtual = `${dia}/${mes}/${ano}`;
+        console.log(dataAtual);
         const enviosRef = ref(database, `envios/${index}/destino`);
         const updates = {
-            Chegada: dataAtual,
+            'Chegada': data,
             'Responsavel pelo recebimento': user
         };
         update(enviosRef, updates); //atualiza o banco de dados
     }
-}
+} */
 
 export function novoEnvio() {
     const confirmacao = confirm("Deseja salvar o envio?");

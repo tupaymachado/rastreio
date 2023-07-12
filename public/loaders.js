@@ -1,4 +1,4 @@
-import { set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { set, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 import { createTableRows, createTableRowsCD } from "./createTable.js";
 import { database, ref, onValue } from "./config.js";
 
@@ -89,6 +89,9 @@ export function loadEnvios() {
 
 export function limpaDB() { //arrumar para executar apenas de X em X dias; 
     const dataAtual = new Date();
+    const limpezaRef = ref(database, `users/ultimaLimpeza`);
+    const ultimaLimpeza = new Date(window.user.ultimaLimpeza);
+    console.log(ultimaLimpeza)
     for (let i = 0; i < window.envios.length; i++) {
         if (!window.envios[i]?.destino?.Chegada) {
             continue;
