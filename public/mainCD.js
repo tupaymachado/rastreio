@@ -18,7 +18,9 @@ onAuthStateChanged(auth, (user) => {
 
 window.confirmCD = function confirmReceb(index, etapa) { //essa merda só funciona se eu colocar o window
     const confirmacao = confirm("Deseja confirmar o recebimento?");
+    console.log('teste');
     if (confirmacao) {
+        
         const data = new Date();
         const dia = String(data.getDate()).padStart(2, "0");
         const mes = String(data.getMonth() + 1).padStart(2, "0");

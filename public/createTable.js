@@ -10,7 +10,7 @@ export function createTableRows(data, tabela, isRecebimento) {
             ${convertData(data[i].origem['Saida'])}
             <td>${data[i].origem['Destino']}</td>
             <td>${data[i].origem['Transportador']}</td>
-            ${convertData(data[i].cd['Chegada'])}</td>
+            ${convertData(data[i].cd['Chegada'])}
             <td>${data[i].cd['Responsavel pelo recebimento']}</td>
             ${convertData(data[i].cd['Saida'])}
             <td>${data[i].cd['Responsavel pela saida']}</td>
@@ -45,9 +45,10 @@ export function createStatusColumn(isRecebimento, envio) {
         }
     } else {
         envioStatus =
-            `${convertData(envio.destino['Chegada'])}</td>
+            `${envio.destino['Chegada'] == '' ? `<td>Em transporte</td>` : convertData(envio.destino['Chegada'])}
             <td>${envio.destino['Responsavel pelo recebimento']}</td>`;
     }
+    
     return envioStatus;
 }
 

@@ -30,6 +30,8 @@ export function loadDB(isCD) { //refazer objetos do /envios
             window.db = data;
             window.dbLength = data ? data.length : 0;
             window.envios = data ? data.filter(Boolean) : []; //.filter(Boolean) filtra os índices vazios do vetor, e facilita o trabalho; em caso do DB ficar sem nenhum item, é preciso definir essa variálvel como um array vazio
+            console.log('loadDB:')
+            console.log(window.envios)
             resolve(data);
             if (isCD) {
                 loadRecebimentos(isCD);
@@ -47,7 +49,7 @@ export function loadDB(isCD) { //refazer objetos do /envios
 export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e carrega TUDO no mainCD
     const tabelaStatus = document.getElementById("status-table-body");
     const statusMain = [];
-    if (isCD) {//se for CD, carrega todos os envios
+    if (isCD) { //se for CD, carrega todos os envios
         for (let i = 0; i < window.envios.length; i++) {
             const envio = { ...window.envios[i], index: i };
             statusMain.push(envio);
@@ -69,7 +71,7 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
     }
 }
 
-export function loadEnvios() { //Erro quando acessa um item vazio do index de window.envios
+export function loadEnvios() {
     if (user == 'Pelotas - Laranjal') {
         limpaDB();
     }
@@ -85,7 +87,7 @@ export function loadEnvios() { //Erro quando acessa um item vazio do index de wi
     createTableRows(rows, tabelaEnvios, false);
 }
 
-export function limpaDB() {
+export function limpaDB() { //arrumar para executar apenas de X em X dias; 
     const dataAtual = new Date();
     for (let i = 0; i < window.envios.length; i++) {
         if (!window.envios[i]?.destino?.Chegada) {
@@ -94,17 +96,19 @@ export function limpaDB() {
             let dataRecebimento = new Date(window.envios[i].destino.Chegada);
             const diferencaMilissegundos = dataAtual - dataRecebimento;
             const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
-            if (diferencaDias > 30) { //
-                
-                const itemRef = ref(database, `envios/${i}`);
-                set(itemRef, null)
-                    .then(() => {
-                        console.log(i + " Item excluído com sucesso!");
-                    })
-                    .catch((error) => {
-                        console.error("Erro ao excluir o item:", error);
-                    });
+            if (diferencaDias > 30) {
+                window.envios.splice(i, 1);
+                i--;
             }
         }
     }
+
+    const enviosRef = ref(database, "envios");
+    set(enviosRef, window.envios)
+        .then(() => {
+            console.log("Database atualizado com sucesso!");
+        })
+        .catch((error) => {
+            console.error("Erro ao atualizar o database:", error);
+        });
 }
