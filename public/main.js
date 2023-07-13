@@ -31,23 +31,16 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-window.confirmReceb = function confirmReceb(index) {
+window.confirmReceb = function confirmReceb(index) { //essa merda só funciona se eu colocar o window. antes
     const confirmacao = confirm("Deseja confirmar o recebimento?");
     if (confirmacao) {
         const data = new Date();
-        const enviosRef = ref(database, `envios/${index}`);
+        const enviosRef = ref(database, `envios/${index}/destino`);
         const updates = {
-            destino: {
-                Chegada: data,
-                'Responsavel pelo recebimento': user // Substitua por user.value se necessário
-            }
+            Chegada: data,
+            'Responsavel pelo recebimento': user //arrumar para ele pegar o .value do input da tabela
         };
-        update(enviosRef, updates)
-            .then(() => {
-                console.log("Dados de recebimento atualizados com sucesso!");
-            })
-            .catch((error) => {
-                console.error("Erro ao atualizar os dados de recebimento:", error);
-            });
+        console.log(updates)
+        update(enviosRef, updates); //atualiza o banco de dados
     }
 }

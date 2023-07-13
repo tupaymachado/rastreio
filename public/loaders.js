@@ -1,4 +1,4 @@
-import { set, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { set, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 import { createTableRows, createTableRowsCD } from "./createTable.js";
 import { database, ref, onValue } from "./config.js";
 
@@ -27,11 +27,7 @@ export function loadDB(isCD) { //refazer objetos do /envios
         const enviosRef = ref(database, "envios");
         onValue(enviosRef, (snapshot) => {
             const data = snapshot.val();
-            window.db = data;
-            window.dbLength = data ? data.length : 0;
             window.envios = data ? data.filter(Boolean) : []; //.filter(Boolean) filtra os índices vazios do vetor, e facilita o trabalho; em caso do DB ficar sem nenhum item, é preciso definir essa variálvel como um array vazio
-            console.log('loadDB:')
-            console.log(window.envios)
             resolve(data);
             if (isCD) {
                 loadRecebimentos(isCD);
@@ -87,31 +83,51 @@ export function loadEnvios() {
     createTableRows(rows, tabelaEnvios, false);
 }
 
-export function limpaDB() { //arrumar para executar apenas de X em X dias; 
-    const dataAtual = new Date();
-    const limpezaRef = ref(database, `users/ultimaLimpeza`);
-    const ultimaLimpeza = new Date(window.user.ultimaLimpeza);
-    console.log(ultimaLimpeza)
-    for (let i = 0; i < window.envios.length; i++) {
-        if (!window.envios[i]?.destino?.Chegada) {
-            continue;
-        } else {
-            let dataRecebimento = new Date(window.envios[i].destino.Chegada);
-            const diferencaMilissegundos = dataAtual - dataRecebimento;
-            const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
-            if (diferencaDias > 30) {
-                window.envios.splice(i, 1);
-                i--;
-            }
-        }
-    }
-
-    const enviosRef = ref(database, "envios");
-    set(enviosRef, window.envios)
-        .then(() => {
-            console.log("Database atualizado com sucesso!");
-        })
-        .catch((error) => {
-            console.error("Erro ao atualizar o database:", error);
-        });
+export function limpaDB() { //puta que pariu, que gambiarra complexa
+    return new Promise((resolve, reject) => {
+        const userRef = ref(database, `users/ultimaLimpeza`);
+        get(userRef) //verifica a data da última limpeza
+            .then((snapshot) => {
+                const data = snapshot.val();
+                console.log(data)
+                const dataAtual = new Date();
+                const ultimaLimpeza = new Date(data);
+                console.log(ultimaLimpeza)
+                const diferencaMilissegundos = dataAtual - ultimaLimpeza;
+                const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
+                console.log(diferencaDias)
+                //limpa o database
+                if (diferencaDias > 30) {
+                    update(userRef, dataAtual)
+                        .then(() => {
+                            console.log("Data atualizada com sucesso!");
+                        })
+                        .catch((error) => {
+                            console.error("Erro ao atualizar o database:", error);
+                        });
+                    for (let i = 0; i < window.envios.length; i++) {
+                        if (!window.envios[i]?.destino?.Chegada) { //
+                            continue;
+                        } else {
+                            let dataRecebimento = new Date(window.envios[i].destino.Chegada);
+                            const diferencaMilissegundos = dataAtual - dataRecebimento;
+                            const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
+                            if (diferencaDias > 30) {
+                                console.log('Teste ' + diferencaDias);
+                                window.envios.splice(i, 1);
+                                i--;
+                            }
+                        }
+                    }
+                    const enviosRef = ref(database, "envios");
+                    set(enviosRef, window.envios)
+                        .then(() => {
+                            console.log("Database atualizado da sucesso!");
+                        })
+                        .catch((error) => {
+                            console.error("Erro ao atualizar o database:", error);
+                        });
+                }
+            })
+    })
 }
