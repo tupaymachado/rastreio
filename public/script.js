@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
 
 const firebaseConfig = {
@@ -21,6 +21,9 @@ const btnLogin = document.getElementById("btnLogin");
 btnLogin.addEventListener("click", login);
 emailInput.addEventListener("change", validateFields);
 passwordInput.addEventListener("change", validateFields);
+document.getElementById("resetPasswordBtn").addEventListener("click", function () {
+    resetPassword('tupay.machado@gmail.com')
+});
 
 function validateFields() {
     const email = emailInput.value;
@@ -69,5 +72,30 @@ function login() {
         .catch((error) => {
             console.log(error.code);
             alert("Erro ao realizar login");
+        });
+}
+
+function resetPassword(email) {
+    const form = document.getElementsByClassName('loginForm')[0];
+    form.style.display = 'none';
+    const message = document.createElement('p');
+    message.innerHTML = 'Um email de redefinição de senha foi enviado para o endereço informado. <br> Caso não receba o email, verifique sua caixa de spam.';
+    document.getElementById('resetPasswordContainer').appendChild(message);
+    const returnBtn = document.createElement('button');
+    returnBtn.innerHTML = 'Voltar';
+    returnBtn.className = 'btn btn-primary';
+    returnBtn.addEventListener('click', function () {
+        window.location.reload();
+    });
+    document.getElementById('resetPasswordContainer').appendChild(returnBtn);
+    
+    const auth = getAuth();
+
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            console.log("Email de redefinição de senha enviado com sucesso!");
+        })
+        .catch((error) => {
+            console.error("Erro ao enviar email de redefinição de senha:", error);
         });
 }
