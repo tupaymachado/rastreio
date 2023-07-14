@@ -23,8 +23,36 @@
     <div class="status-table"> <!-- vai mostrar os últmos 5 malotes recebidos -->
         <div id=options-container>
             <p>Malotes vindo ou já recebidos</p>
-            <label for="statusQt">Defina quantos recebimentos quer visualizar:</label>
-            <select id="statusQt" name="statusQt">
+            <span class="filtrosMatriz hide">
+                <label for="status">Status de recebimento:</label>
+                <select id="status" name="status">
+                    <option value="todos">Todos</option>
+                    <option value="recebidos">Recebidos</option>
+                    <option value="transporte">Em transporte</option>
+                </select>
+            </span>
+            <span class="filtrosMatriz hide">
+                <label for="origemTabela">Origem do envio:</label>
+                <select id="origemTabela" name="origemTabela">
+                    <option value="todos">Todos</option>
+                    <option value="Cachoeira do Sul">Cachoeira do Sul</option>
+                    <option value="Camaquã">Camaquã</option>
+                    <option value="Canguçu">Canguçu</option>
+                    <option value="Cassino">Cassino</option>
+                    <option value="Garopaba">Garopaba</option>
+                    <option value="Guaíba">Guaíba</option>
+                    <option value="Lajeado">Lajeado</option>
+                    <option value="Novo Hamburgo">Novo Hamburgo</option>
+                    <option value="Pelotas - F.Osório">Pelotas - F.Osório</option>
+                    <option value="Pelotas - Laranjal">Pelotas - Laranjal</option>
+                    <option value="São Leopoldo">São Leopoldo</option>
+                    <option value="São Lourenço do Sul">São Lourenço do Sul</option>
+                    <option value="Torres">Torres</option>
+                    <option value="Xangri-lá">Xangri-lá</option>
+                </select>
+            </span>
+            <label for="quant">Defina quantos recebimentos quer visualizar:</label>
+            <select id="quant" name="quant">
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
@@ -139,7 +167,12 @@
                         </select>
                         <br>
                         <label for="transportador">Transportador:</label>
-                        <input type="text" id="transportador" required>
+                        <select name="transportador" id="transportador" required>
+                            <option>Selecione</option>
+                            <option value="Teste 1">Teste 1</option>
+                            <option value="Teste 2">Teste 2</option>
+                            <option value="Teste 3">Teste 3</option>
+                        </select>
                         <br>
                         <button id="envioBtn" type="button" class="btn btn-primary">Enviar</button>
                     </form>
@@ -153,4 +186,5 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

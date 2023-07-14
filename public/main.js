@@ -16,11 +16,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-document.getElementById('statusQt').addEventListener('change', function () { //se não passar o false, ele carrega como true (?) e tenta carregar createTableRowsCD
+document.getElementById('quant').addEventListener('change', function () { //se não passar o false, ele carrega como true (?) e tenta carregar createTableRowsCD
     loadRecebimentos(false);
 });
 document.getElementById('enviosQt').addEventListener('change', loadEnvios);
 document.getElementById('envioBtn').addEventListener('click', novoEnvio);
+document.getElementsByClassName('filtrosMatriz')[0].addEventListener('change', function () {
+    loadRecebimentos(false);
+});
+document.getElementsByClassName('filtrosMatriz')[1].addEventListener('change', function () {
+    loadRecebimentos(false);
+});
+
 
 const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
@@ -38,7 +45,7 @@ window.confirmReceb = function confirmReceb(index) { //essa merda só funciona s
         const enviosRef = ref(database, `envios/${index}/destino`);
         const updates = {
             Chegada: data,
-            'Responsavel pelo recebimento': user //arrumar para ele pegar o .value do input da tabela
+            'Responsavel pelo recebimento': document.getElementById('respChegada' + index).value
         };
         console.log(updates)
         update(enviosRef, updates); //atualiza o banco de dados

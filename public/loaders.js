@@ -13,6 +13,12 @@ export function loadUser() { //carrega o usuário, confere se é do CD e chama l
             resolve(data);
             const nome = document.getElementById('user-logo');
             nome.innerHTML = `/ Bem-vindo, ${user}`;
+            if (user == 'Matriz') {
+                const elements = document.getElementsByClassName("hide");
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].style.display = 'inline';
+                }
+            }
             const isCD = (user == 'CD') ? true : false;
             loadDB(isCD);
         }, (error) => {
@@ -58,14 +64,48 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
             }
         }
     }
-    const statusQt = (document.getElementById("statusQt").value > statusMain.length) ? statusMain.length : document.getElementById("statusQt").value; //confere se o valor do input é maior que o tamanho do array
-    const rows = statusMain.slice(-statusQt);
+    console.log(statusMain);
+    if (user == 'Matriz') { //atualizar quando mudar o nome do usuário Matriz
+        const origemTabela = document.getElementById("origemTabela").value;
+        console.log(origemTabela)
+        const status = document.getElementById("status").value;
+        console.log(status)
+        if (origemTabela != 'todos') {
+            for (let i = 0; i < statusMain.length; i++) {
+                if (statusMain[i].origem.Origem != origemTabela) {
+                    statusMain.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+        if (status != 'todos') {
+            if (status == 'recebidos') {
+                for (let i = 0; i < statusMain.length; i++) {
+                    if (statusMain[i].destino.Chegada == '') {
+                        statusMain.splice(i, 1);
+                        i--;
+                    }
+                }
+            } else {
+                for (let i = 0; i < statusMain.length; i++) {
+                    if (statusMain[i].destino.Chegada != '') {
+                        statusMain.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+        }
+    }
+    console.log(statusMain)
+    const quant = (document.getElementById("quant").value > statusMain.length) ? statusMain.length : document.getElementById("quant").value; //confere se o valor do input é maior que o tamanho do array
+    const rows = statusMain.slice(-quant);
     if (isCD) {
         createTableRowsCD(rows)
     } else {
         createTableRows(rows, tabelaStatus, true);
     }
 }
+
 
 export function loadEnvios() {
     if (user == 'Pelotas - Laranjal') {
@@ -78,6 +118,7 @@ export function loadEnvios() {
             enviosMain.push(window.envios[i]);
         }
     }
+    //adicionar filtro de status de entrega e destino
     const enviosQt = (document.getElementById("enviosQt").value > enviosMain.length) ? enviosMain.length : document.getElementById("enviosQt").value;
     const rows = enviosMain.slice(-enviosQt);
     createTableRows(rows, tabelaEnvios, false);
@@ -88,15 +129,11 @@ export function limpaDB() { //puta que pariu, que gambiarra complexa
         const userRef = ref(database, `users/ultimaLimpeza`);
         get(userRef) //verifica a data da última limpeza
             .then((snapshot) => {
-                const data = snapshot.val();
-                console.log(data)
+                const data = snapshot.val()
                 const dataAtual = new Date();
                 const ultimaLimpeza = new Date(data);
-                console.log(ultimaLimpeza)
                 const diferencaMilissegundos = dataAtual - ultimaLimpeza;
                 const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
-                console.log(diferencaDias)
-                //limpa o database
                 if (diferencaDias > 30) {
                     update(userRef, dataAtual)
                         .then(() => {

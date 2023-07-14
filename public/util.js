@@ -30,7 +30,7 @@ export function novoEnvio() {
         const responsavel = document.getElementById('responsavel').value;
         const destino = document.getElementById('destino').value;
         const transportador = document.getElementById('transportador').value;
-        if (malote === '' || responsavel === '' || transportador === '') {
+        if (malote === '' || responsavel === '') {
             alert("Preencha todos os campos.");
             return;
         }
@@ -38,7 +38,10 @@ export function novoEnvio() {
             alert("Selecione um destino válido.");
             return;
         }
-
+        if (transportador === 'Selecione') {
+            alert("Selecione um transportador válido.");
+            return;
+        }
         const data = new Date();
         const envio = {
             origem: {
@@ -63,7 +66,7 @@ export function novoEnvio() {
         };
 
         const enviosRef = ref(database, `envios/`);
-        update(enviosRef, { [window.dbLength]: envio }); //ele está sobreescrevendo o envio anterior, não adicionando um novo
+        update(enviosRef, { [window.envios.length]: envio }); //ele está sobreescrevendo o envio anterior, não adicionando um novo
         var myModalEl = document.getElementById('exampleModal');
         var modal = bootstrap.Modal.getInstance(myModalEl); 
         modal.hide();

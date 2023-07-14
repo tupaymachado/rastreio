@@ -39,7 +39,10 @@ export function createStatusColumn(isRecebimento, envio) {
         if (!envio.cd['Responsavel pela saida']) {
             envioStatus = `<td>Em trânsito</td>`;
         } else if (!envio.destino['Chegada']) {
-            envioStatus = `<td><button class='btn btn-primary btn-sm' onClick='confirmReceb(${envio.index})'>Recebido?</button></td>`;
+            envioStatus = `<td>
+            <input type='text' id='respChegada${envio.index}' placeholder='Responsável Receb.'></input>
+            <button class='btn btn-primary btn-sm' onClick='confirmReceb(${envio.index})'>Recebido</button>
+            </td>`;
         } else {
             envioStatus = `<td>Recebido</td>`;
         }
@@ -48,7 +51,7 @@ export function createStatusColumn(isRecebimento, envio) {
             `${envio.destino['Chegada'] == '' ? `<td>Em transporte</td>` : convertData(envio.destino['Chegada'])}
             <td>${envio.destino['Responsavel pelo recebimento']}</td>`;
     }
-    
+
     return envioStatus;
 }
 
