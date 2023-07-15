@@ -12,7 +12,7 @@ export function loadUser() { //carrega o usuário, confere se é do CD e chama l
             window.user = data;
             resolve(data);
             const nome = document.getElementById('user-logo');
-            nome.innerHTML = `/ Bem-vindo, ${user}`;
+            nome.innerHTML = `Você está logado em: ${user}`;
             if (user == 'Matriz') {
                 const elements = document.getElementsByClassName("hide");
                 for (let i = 0; i < elements.length; i++) {
@@ -64,7 +64,6 @@ export function loadRecebimentos(isCD) { //carrega recebimentos no main normal e
             }
         }
     }
-    console.log(statusMain);
     if (user == 'Matriz') { //atualizar quando mudar o nome do usuário Matriz
         const origemTabela = document.getElementById("origemTabela").value;
         console.log(origemTabela)
