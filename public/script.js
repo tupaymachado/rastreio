@@ -22,7 +22,7 @@ btnLogin.addEventListener("click", login);
 emailInput.addEventListener("change", validateFields);
 passwordInput.addEventListener("change", validateFields);
 document.getElementById("resetPasswordBtn").addEventListener("click", function () {
-    resetPassword('tupay.machado@gmail.com')
+    resetPassword(document.getElementById('email').value)
 });
 
 function validateFields() {
@@ -75,15 +75,19 @@ function login() {
         });
 }
 
-function resetPassword(email) {
+function resetPassword(x) {
     const form = document.getElementsByClassName('loginForm')[0];
+    const email = document.getElementById('email').value;
+    if (!email) {
+        alert('Insira um e-mail válido no campo definido.');
+        return;
+    }
     form.style.display = 'none';
     const message = document.createElement('p');
     message.innerHTML = 'Um email de redefinição de senha foi enviado para o endereço informado. <br> Caso não receba o email, verifique sua caixa de spam.';
     document.getElementById('resetPasswordContainer').appendChild(message);
     const returnBtn = document.createElement('button');
     returnBtn.innerHTML = 'Voltar';
-    returnBtn.className = 'btn btn-primary';
     returnBtn.addEventListener('click', function () {
         window.location.reload();
     });
