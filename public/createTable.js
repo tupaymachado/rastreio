@@ -99,9 +99,9 @@ export function createStatusColumnCD(envio) {
         `;
     } else {
         cells = `
-            <td>${envio.cd['Chegada']}</td>
+            ${convertData(envio.cd['Chegada'])}
             <td>${envio.cd['Responsavel pelo recebimento']}</td>
-            <td>${envio.cd['Saida']}</td>
+            ${convertData(envio.cd['Chegada'])}
             <td>${envio.cd['Responsavel pela saida']}</td>
             <td>${envio.cd['Transportador']}</td>
         `;
