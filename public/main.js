@@ -41,6 +41,10 @@ onAuthStateChanged(auth, (user) => {
 window.confirmReceb = function confirmReceb(index) { //essa merda só funciona se eu colocar o window. antes
     const confirmacao = confirm("Deseja confirmar o recebimento?");
     if (confirmacao) {
+        if (document.getElementById('respChegada' + index).value == '') {
+            alert('Preencha o campo de responsavel pelo recebimento');
+            return;
+        }
         const data = new Date();
         const enviosRef = ref(database, `envios/${index}/destino`);
         const updates = {
