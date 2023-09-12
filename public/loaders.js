@@ -1,6 +1,6 @@
 import { set, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 import { createTableRows, createTableRowsCD } from "./createTable.js";
-import { database, ref, onValue } from "./config.js";
+import { database, ref, onValue, update } from "./config.js";
 
 const uid = localStorage.getItem('uid');
 
@@ -131,10 +131,12 @@ export function limpaDB() { //puta que pariu, que gambiarra complexa
                 const data = snapshot.val()
                 const dataAtual = new Date();
                 const ultimaLimpeza = new Date(data);
+                console.log('última limpeza: ' + ultimaLimpeza)
                 const diferencaMilissegundos = dataAtual - ultimaLimpeza;
                 const diferencaDias = diferencaMilissegundos / (1000 * 60 * 60 * 24);
                 if (diferencaDias > 30) {
-                    update(userRef, dataAtual)
+                    console.log(diferencaDias)
+                    update(userRef, dataAtual) //
                         .then(() => {
                             console.log("Data atualizada com sucesso!");
                         })
