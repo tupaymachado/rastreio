@@ -113,6 +113,7 @@ export function loadEnvios() {
     const tabelaEnvios = document.getElementById("envios-table-body");
     const enviosMain = [];
     for (let i = 0; i < window.envios.length; i++) {
+        console.log(i)
         if (window.envios[i].origem.Origem.toLowerCase() == user.toLowerCase()) {
             enviosMain.push(window.envios[i]);
         }
